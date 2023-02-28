@@ -32,32 +32,14 @@ def _max_width_():
 st.set_page_config(page_icon="images/icon.png", page_title="Entity Extractor")
 
 
-API_KEY = st.sidebar.text_input(
-    "Enter your HuggingFace API key",
-    help="Once you created you HuggingFace account, you can get your free API token in your settings page: https://huggingface.co/settings/tokens",
-    type="password",
-)
 
-# Adding the HuggingFace API inference URL.
-API_URL = "https://api-inference.huggingface.co/models/StanfordAIMI/stanford-deidentifier-base"
-
-# Now, let's create a Python dictionary to store the API headers.
-headers = {"Authorization": f"Bearer {API_KEY}"}
-
-df = pd.DataFrame()
-person = []
-location = []
-date = []
-id = []
-company = []
-output = []
 c2, c3 = st.columns([6, 1])
 
 with c2:
     c31, c32 = st.columns([12, 2])
     with c31:
         st.caption("")
-        st.title("Entity Extractor")
+        st.title("Shot 0")
     with c32:
         st.image(
             "images/logo.png",
@@ -74,34 +56,21 @@ uploaded_file = st.file_uploader(
 )
 
 
-def copyWriter(payload):
-    response = requests.post(API_URL, headers=headers, json=payload)
-    return response.json()
-
 if uploaded_file is not None:
-    output_string = StringIO()
-    
-    parser = PDFParser(uploaded_file)
-    doc = PDFDocument(parser)
-    rsrcmgr = PDFResourceManager()
-    device = TextConverter(rsrcmgr, output_string, laparams=LAParams())
-    interpreter = PDFPageInterpreter(rsrcmgr, device)
-    for page in PDFPage.create_pages(doc):
-        interpreter.process_page(page)
-    output = copyWriter({
-            "inputs": output_string.getvalue(),
-        })
+    from PIL import Image
+    import requests
 
-    #st.write(merged_text)
-    st.subheader('Your text before processing.')
-    st.write(output_string.getvalue())
-    result_text = output_string.getvalue()
-mask_char = '*'
-for i in output:
-    #output_string[i['start'], i['end']]
-    result_text = result_text[:i['start']] + mask_char*(i['end']-i['start']) + result_text[i['end']:]
+    from transformers import CLIPProcessor, CLIPModel
 
-st.write(result_text)
-st.subheader('Your text after processing.')
-last_result = re.sub(r'\*{5,}', '*****', result_text)
-st.write(last_result)
+    model = CLIPModel.from_pretrained("openai/clip-vit-large-patch14")
+    processor = CLIPProcessor.from_pretrained("openai/clip-vit-large-patch14")
+
+    url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+    image = Image.open(requests.get(url, stream=True).raw)
+
+    inputs = processor(text=["a photo of a cat", "a photo of a dog"], images=image, return_tensors="pt", padding=True)
+
+    outputs = model(**inputs)
+    logits_per_image = outputs.logits_per_image # this is the image-text similarity score
+    probs = logits_per_image.softmax(dim=1) # we can take the softmax to get the label probabilities
+    st.write(outputs)
