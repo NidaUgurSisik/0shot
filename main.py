@@ -1,14 +1,10 @@
-import re
-
-import pandas as pd
-import streamlit as st
-import requests
-from functionforDownloadButtons import download_button
 from io import StringIO
 from PIL import Image
 import requests
-
-from transformers import CLIPProcessor, CLIPModel
+from transformers import AutoProcessor, CLIPModel
+import streamlit as st
+import pandas as pd
+from functionforDownloadButtons import download_button
 
 def _max_width_():
     max_width_str = f"max-width: 1800px;"
