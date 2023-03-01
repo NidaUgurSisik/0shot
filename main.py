@@ -52,8 +52,11 @@ if uploaded_file is not None:
 
     st.image(image, caption='---------')
 
-    model = CLIPModel.from_pretrained("openai/clip-vit-large-patch14")
-    processor = CLIPProcessor.from_pretrained("openai/clip-vit-large-patch14")
+    model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
+    processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+
+    url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+    image = Image.open(requests.get(url, stream=True).raw)
 
     inputs = processor(text=["a photo of a cat", "a photo of a dog"], images=image, return_tensors="pt", padding=True)
 
