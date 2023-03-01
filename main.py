@@ -50,20 +50,22 @@ uploaded_file = st.file_uploader(
 form = st.form(key="annotation")
 result = ""
 list_keywords = []
+image = Image.open(uploaded_file)
+st.image(image, caption='---------')
+
 with form:
     question_input = st.text_input("Enter your query here")
     #list_keywords = question_input.split(',')
     submitted = st.form_submit_button(label="Submit")
 
 if uploaded_file is not None and submitted is not None:
-    image = Image.open(uploaded_file)
-
+    
     model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
     processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 
     #url = "http://images.cocodataset.org/val2017/000000039769.jpg"
     #image = Image.open(requests.get(url, stream=True).raw)
-    st.image(image, caption='---------')
+    
     #asd = question_input.split(',')
     #st.write(question_input.split(','))
     inputs = processor(text=question_input.split(','), images=image, return_tensors="pt", padding=True)
