@@ -52,7 +52,7 @@ result = ""
 list_keywords = []
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
-    st.image(image, caption='---------')
+    st.image(image, caption='')
     form = st.form(key="annotation")
     with form:
         question_input = st.text_input("Enter your query here")
