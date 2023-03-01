@@ -1,7 +1,7 @@
 from io import StringIO
 from PIL import Image
 import requests
-from transformers import AutoProcessor, CLIPModel
+from transformers import CLIPProcessor, CLIPModel
 import streamlit as st
 import pandas as pd
 from functionforDownloadButtons import download_button
