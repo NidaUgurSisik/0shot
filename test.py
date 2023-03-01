@@ -1,16 +1,29 @@
-from PIL import Image
-import requests
+from sagemaker.huggingface import HuggingFaceModel
+import boto3
 
-from transformers import CLIPProcessor, CLIPModel
+iam_client = boto3.client('iam')
+role = iam_client.get_role(RoleName='{IAM_ROLE_WITH_SAGEMAKER_PERMISSIONS}')['Role']['Arn']
+# Hub Model configuration. https://huggingface.co/models
+hub = {
+	'HF_MODEL_ID':'openai/clip-vit-large-patch14',
+	'HF_TASK':'image-classification'
+}
 
-model = CLIPModel.from_pretrained("openai/clip-vit-large-patch14")
-processor = CLIPProcessor.from_pretrained("openai/clip-vit-large-patch14")
+# create Hugging Face Model Class
+huggingface_model = HuggingFaceModel(
+	transformers_version='4.17.0',
+	pytorch_version='1.10.2',
+	py_version='py38',
+	env=hub,
+	role=role, 
+)
 
-url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-image = Image.open(requests.get(url, stream=True).raw)
+# deploy model to SageMaker Inference
+predictor = huggingface_model.deploy(
+	initial_instance_count=1, # number of instances
+	instance_type='ml.m5.xlarge' # ec2 instance type
+)
 
-inputs = processor(text=["a photo of a cat", "a photo of a dog"], images=image, return_tensors="pt", padding=True)
-
-outputs = model(**inputs)
-logits_per_image = outputs.logits_per_image # this is the image-text similarity score
-probs = logits_per_image.softmax(dim=1) # we can take the softmax to get the label probabilities
+predictor.predict({
+	'inputs': 'a photo of a cat", "a photo of a dog'
+})
