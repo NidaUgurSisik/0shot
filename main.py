@@ -64,7 +64,7 @@ if uploaded_file is not None and submitted is not None:
     #image = Image.open(requests.get(url, stream=True).raw)
     st.image(image, caption='---------')
     st.write(question_input.split(','))
-    inputs = processor(text=["a photo of a cat", "a photo of a dog"], images=image, return_tensors="pt", padding=True)
+    inputs = processor(text=question_input.split(','), images=image, return_tensors="pt", padding=True)
 
     outputs = model(**inputs)
     logits_per_image = outputs.logits_per_image # this is the image-text similarity score
