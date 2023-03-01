@@ -47,13 +47,13 @@ uploaded_file = st.file_uploader(
     help="To activate 'wide mode', go to the hamburger menu > Settings > turn on 'wide mode'",
 )
 
-form = st.form(key="annotation")
+
 result = ""
 list_keywords = []
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
     st.image(image, caption='---------')
-
+    form = st.form(key="annotation")
     with form:
         question_input = st.text_input("Enter your query here")
         #list_keywords = question_input.split(',')
