@@ -48,16 +48,16 @@ uploaded_file = st.file_uploader(
 
 
 if uploaded_file is not None:
-    image = Image.open(uploaded_file)
+    #image = Image.open(uploaded_file)
 
-    st.image(image, caption='---------')
+    
 
     model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
     processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 
     url = "http://images.cocodataset.org/val2017/000000039769.jpg"
     image = Image.open(requests.get(url, stream=True).raw)
-
+    st.image(image, caption='---------')
     inputs = processor(text=["a photo of a cat", "a photo of a dog"], images=image, return_tensors="pt", padding=True)
 
     outputs = model(**inputs)
