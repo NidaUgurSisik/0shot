@@ -46,6 +46,12 @@ uploaded_file = st.file_uploader(
     help="To activate 'wide mode', go to the hamburger menu > Settings > turn on 'wide mode'",
 )
 
+form = st.form(key="annotation")
+result = ""
+with form:
+    question_input = st.text_input("Enter your query here")
+
+    submitted = st.form_submit_button(label="Submit")
 
 if uploaded_file is not None and submitted is not None:
     image = Image.open(uploaded_file)
@@ -62,8 +68,3 @@ if uploaded_file is not None and submitted is not None:
     logits_per_image = outputs.logits_per_image # this is the image-text similarity score
     probs = logits_per_image.softmax(dim=1) # we can take the softmax to get the label probabilities
     st.write(probs)
-
-with form:
-    question_input = st.text_input("Enter your query here")
-
-    submitted = st.form_submit_button(label="Submit")
