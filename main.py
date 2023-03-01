@@ -51,7 +51,7 @@ result = ""
 list_keywords = []
 with form:
     question_input = st.text_input("Enter your query here")
-    list_keywords = question_input.split(',')
+    #list_keywords = question_input.split(',')
     submitted = st.form_submit_button(label="Submit")
 
 if uploaded_file is not None and submitted is not None:
@@ -64,8 +64,8 @@ if uploaded_file is not None and submitted is not None:
     #image = Image.open(requests.get(url, stream=True).raw)
     st.image(image, caption='---------')
     #asd = question_input.split(',')
-    st.write(list_keywords)
-    inputs = processor(text=["a photo of a cat", "a photo of a dog"], images=image, return_tensors="pt", padding=True)
+    #st.write(question_input.split(','))
+    inputs = processor(text=[question_input.split(',')], images=image, return_tensors="pt", padding=True)
 
     outputs = model(**inputs)
     logits_per_image = outputs.logits_per_image # this is the image-text similarity score
