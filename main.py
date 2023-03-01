@@ -20,7 +20,7 @@ def _max_width_():
         unsafe_allow_html=True,
     )
 
-st.set_page_config(page_icon="images/icon.png", page_title="Entity Extractor")
+st.set_page_config(page_icon="images/icon.png", page_title="Zero Shot")
 
 
 
