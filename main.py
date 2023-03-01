@@ -13,7 +13,10 @@ from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.pdfpage import PDFPage
 from pdfminer.pdfparser import PDFParser
+from PIL import Image
+import requests
 
+from transformers import CLIPProcessor, CLIPModel
 
 def _max_width_():
     max_width_str = f"max-width: 1800px;"
@@ -57,11 +60,7 @@ uploaded_file = st.file_uploader(
 
 
 if uploaded_file is not None:
-    from PIL import Image
-    import requests
-
-    from transformers import CLIPProcessor, CLIPModel
-
+    
     model = CLIPModel.from_pretrained("openai/clip-vit-large-patch14")
     processor = CLIPProcessor.from_pretrained("openai/clip-vit-large-patch14")
 
