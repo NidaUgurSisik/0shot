@@ -3,16 +3,8 @@ import re
 import pandas as pd
 import streamlit as st
 import requests
-from PyPDF2 import PdfReader
 from functionforDownloadButtons import download_button
 from io import StringIO
-
-from pdfminer.converter import TextConverter
-from pdfminer.layout import LAParams
-from pdfminer.pdfdocument import PDFDocument
-from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
-from pdfminer.pdfpage import PDFPage
-from pdfminer.pdfparser import PDFParser
 from PIL import Image
 import requests
 
