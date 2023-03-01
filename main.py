@@ -50,8 +50,9 @@ uploaded_file = st.file_uploader(
 form = st.form(key="annotation")
 result = ""
 list_keywords = []
-image = Image.open(uploaded_file)
-st.image(image, caption='---------')
+if uploaded_file is not None:
+    image = Image.open(uploaded_file)
+    st.image(image, caption='---------')
 
 with form:
     question_input = st.text_input("Enter your query here")
