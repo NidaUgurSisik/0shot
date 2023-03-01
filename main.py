@@ -59,20 +59,20 @@ if uploaded_file is not None:
         #list_keywords = question_input.split(',')
         submitted = st.form_submit_button(label="Submit")
 
-if uploaded_file is not None and submitted is not None:
-    
-    model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
-    processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+    if uploaded_file is not None and submitted is not None:
+        
+        model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
+        processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 
-    #url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-    #image = Image.open(requests.get(url, stream=True).raw)
-    
-    #asd = question_input.split(',')
-    #st.write(question_input.split(','))
-    inputs = processor(text=question_input.split(','), images=image, return_tensors="pt", padding=True)
+        #url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+        #image = Image.open(requests.get(url, stream=True).raw)
+        
+        #asd = question_input.split(',')
+        #st.write(question_input.split(','))
+        inputs = processor(text=question_input.split(','), images=image, return_tensors="pt", padding=True)
 
-    outputs = model(**inputs)
-    logits_per_image = outputs.logits_per_image # this is the image-text similarity score
-    probs = logits_per_image.softmax(dim=1) # we can take the softmax to get the label probabilities
-    max_val, max_idx = max(enumerate(probs[0].tolist()), key=lambda x: x[1])
-    st.write(max_val, max_idx)
+        outputs = model(**inputs)
+        logits_per_image = outputs.logits_per_image # this is the image-text similarity score
+        probs = logits_per_image.softmax(dim=1) # we can take the softmax to get the label probabilities
+        max_val, max_idx = max(enumerate(probs[0].tolist()), key=lambda x: x[1])
+        st.write(max_val, max_idx)
