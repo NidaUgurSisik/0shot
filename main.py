@@ -63,4 +63,4 @@ if uploaded_file is not None:
     outputs = model(**inputs)
     logits_per_image = outputs.logits_per_image # this is the image-text similarity score
     probs = logits_per_image.softmax(dim=1) # we can take the softmax to get the label probabilities
-    st.write(outputs)
+    st.write(probs)
