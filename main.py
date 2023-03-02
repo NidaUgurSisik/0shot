@@ -47,14 +47,14 @@ uploaded_file = st.file_uploader("Choose an image", accept_multiple_files=True, 
 result = ""
 list_keywords = []
 if uploaded_file is not None:
-    for i in uploaded_file:
-        image = Image.open(i)
-        #st.image(image, caption='')
-        form = st.form(key="annotation")
-        with form:
+    form = st.form(key="annotation")
+    with form:
             question_input = st.text_input("Enter your possible classes here seperate with commas")
             #list_keywords = question_input.split(',')
             submitted = st.form_submit_button(label="Submit")
+    for i in uploaded_file:
+        image = Image.open(i)
+        #st.image(image, caption='')
 
         if uploaded_file is not None and submitted is not None:
             
