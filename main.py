@@ -55,7 +55,7 @@ if uploaded_file is not None:
     st.image(image, caption='')
     form = st.form(key="annotation")
     with form:
-        question_input = st.text_input("Enter your query here")
+        question_input = st.text_input("Enter your possible classes here seperate with commas")
         #list_keywords = question_input.split(',')
         submitted = st.form_submit_button(label="Submit")
 
