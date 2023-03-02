@@ -1,8 +1,7 @@
 from io import StringIO
 from PIL import Image
 import requests
-#from transformers import CLIPProcessor, CLIPModel
-from transformers import AutoProcessor, AutoModel
+from transformers import CLIPProcessor, CLIPModel
 import streamlit as st
 import pandas as pd
 from functionforDownloadButtons import download_button
@@ -59,9 +58,8 @@ if uploaded_file is not None:
 
         if uploaded_file is not None and submitted is not None:
             
-            processor = AutoProcessor.from_pretrained("openai/clip-vit-large-patch14")
-
-            model = AutoModel.from_pretrained("openai/clip-vit-large-patch14")
+            model = CLIPModel.from_pretrained("openai/clip-vit-large-patch14")
+            processor = CLIPProcessor.from_pretrained("openai/clip-vit-large-patch14")
 
             inputs = processor(text=question_input.split(','), images=image, return_tensors="pt", padding=True)
 
