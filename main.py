@@ -71,4 +71,4 @@ if uploaded_file is not None:
         probs = logits_per_image.softmax(dim=1) # we can take the softmax to get the label probabilities
         max_idx, max_val = max(enumerate(probs[0].tolist()), key=lambda x: x[1])
         #st.write(question_input.split(','))
-        st.write(question_input.split(',')[max_idx], max_val)
+        st.write(question_input.split(',')[max_idx], max_val[:3])
