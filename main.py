@@ -47,24 +47,25 @@ uploaded_file = st.file_uploader("Choose an image", accept_multiple_files=True, 
 result = ""
 list_keywords = []
 if uploaded_file is not None:
-    image = Image.open(uploaded_file)
-    st.image(image, caption='')
-    form = st.form(key="annotation")
-    with form:
-        question_input = st.text_input("Enter your possible classes here seperate with commas")
-        #list_keywords = question_input.split(',')
-        submitted = st.form_submit_button(label="Submit")
+    for i in uploaded_file:
+        image = Image.open(i)
+        st.image(image, caption='')
+        form = st.form(key="annotation")
+        with form:
+            question_input = st.text_input("Enter your possible classes here seperate with commas")
+            #list_keywords = question_input.split(',')
+            submitted = st.form_submit_button(label="Submit")
 
-    if uploaded_file is not None and submitted is not None:
-        
-        model = CLIPModel.from_pretrained("openai/clip-vit-base-patch16")
-        processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch16")
+        if uploaded_file is not None and submitted is not None:
+            
+            model = CLIPModel.from_pretrained("openai/clip-vit-base-patch16")
+            processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch16")
 
-        inputs = processor(text=question_input.split(','), images=image, return_tensors="pt", padding=True)
+            inputs = processor(text=question_input.split(','), images=image, return_tensors="pt", padding=True)
 
-        outputs = model(**inputs)
-        logits_per_image = outputs.logits_per_image # this is the image-text similarity score
-        probs = logits_per_image.softmax(dim=1) # we can take the softmax to get the label probabilities
-        max_idx, max_val = max(enumerate(probs[0].tolist()), key=lambda x: x[1])
-        #st.write(question_input.split(','))
-        st.write(question_input.split(',')[max_idx], max_val)
+            outputs = model(**inputs)
+            logits_per_image = outputs.logits_per_image # this is the image-text similarity score
+            probs = logits_per_image.softmax(dim=1) # we can take the softmax to get the label probabilities
+            max_idx, max_val = max(enumerate(probs[0].tolist()), key=lambda x: x[1])
+            #st.write(question_input.split(','))
+            st.write(question_input.split(',')[max_idx], max_val)
