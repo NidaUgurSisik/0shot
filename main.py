@@ -61,8 +61,8 @@ if uploaded_file is not None:
 
     if uploaded_file is not None and submitted is not None:
         
-        model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
-        processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+        model = CLIPModel.from_pretrained("openai/clip-vit-base-patch16")
+        processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch16")
 
         inputs = processor(text=question_input.split(','), images=image, return_tensors="pt", padding=True)
 
