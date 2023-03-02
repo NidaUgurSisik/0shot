@@ -75,4 +75,5 @@ if uploaded_file is not None:
         logits_per_image = outputs.logits_per_image # this is the image-text similarity score
         probs = logits_per_image.softmax(dim=1) # we can take the softmax to get the label probabilities
         max_idx, max_val = max(enumerate(probs[0].tolist()), key=lambda x: x[1])
+        st.write(question_input.split(','))
         st.write(max_idx, max_val)
